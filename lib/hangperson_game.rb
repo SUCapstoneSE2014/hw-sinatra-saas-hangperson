@@ -7,9 +7,13 @@ class HangpersonGame
 
   # def initialize()
   # end
-  
+  attr_accessor :word
+  attr_accessor :guesses
+  attr_accessor :wrong_guesses
   def initialize(word)
     @word = word
+    @guesses = ''
+    @wrong_guesses = ''
   end
 
   def self.get_random_word
@@ -19,4 +23,46 @@ class HangpersonGame
     Net::HTTP.post_form(uri ,{}).body
   end
 
+  def guess(lettr)
+    if lettr == '' || lettr == nil || !(lettr =~ /[[:alpha:]]/)
+      raise ArgumentError
+    end
+    lettr.downcase!
+    if @word.include? lettr
+      if !guesses.include? lettr
+        guesses << lettr
+      else 
+        return false
+      end
+    else
+      if !wrong_guesses.include? lettr
+        wrong_guesses << lettr
+      else
+        return false
+      end
+    end
+  end
+  
+  def word_with_guesses
+    result = ""
+    @word.each_char do |lett|
+      if @guesses.include? lett
+        result << lett
+      else
+        result << '-'
+      end
+    end
+    return result
+  end
+  
+  def check_win_or_lose
+    if !word_with_guesses.include? '-'
+      return :win
+    elsif @guesses.size + wrong_guesses.size == 7
+      return :lose
+    else
+      return :play
+    end
+  end
+  
 end
