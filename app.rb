@@ -67,7 +67,7 @@ class HangpersonApp < Sinatra::Base
   end
   
   get '/win' do
-    if params[:word] == @game.guesses
+    if @game.word == @game.guesses
       erb :win # You may change/remove this line
     else
       redirect '/show'
