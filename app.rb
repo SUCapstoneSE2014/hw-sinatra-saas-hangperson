@@ -67,7 +67,7 @@ class HangpersonApp < Sinatra::Base
   end
   
   get '/win' do
-    if @game.word == @game.guesses
+    if @game.word == @game.word_with_guesses
       erb :win # You may change/remove this line
     else
       redirect '/show'
@@ -75,7 +75,7 @@ class HangpersonApp < Sinatra::Base
   end
   
   get '/lose' do
-    if @game.wrong_guesses == 7
+    if @game.wrong_guesses.length == 7
       erb :lose # You may change/remove this line
     else
       redirect '/show'
